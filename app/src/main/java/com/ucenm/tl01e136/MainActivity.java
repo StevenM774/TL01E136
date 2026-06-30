@@ -125,8 +125,14 @@ public class MainActivity extends AppCompatActivity {
             valores.put(SQLiteConexion.nota, nota);
             valores.put(SQLiteConexion.imagen, imageViewToByte(imgContacto));
 
-            Toast.makeText(this, "Contacto Guardado con exito", Toast.LENGTH_LONG).show();
-            limpiarPantalla();
+            Long resultado = db.insert(SQLiteConexion.tablaContactos, SQLiteConexion.id, valores);
+
+            if (resultado != -1) {
+                Toast.makeText(this, "Contacto Guardado con exito", Toast.LENGTH_LONG).show();
+                limpiarPantalla();
+            } else {
+                Toast.makeText(this, "Error: No se pudo guardar en la base de datos", Toast.LENGTH_LONG).show();
+            }
             db.close();
 
         } catch (Exception e) {
@@ -135,7 +141,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private byte[] imageViewToByte(ImageView image) {
-        Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
+        android.graphics.drawable.Drawable drawable = image.getDrawable();
+        if (drawable == null) return null;
+
+        Bitmap bitmap;
+        if (drawable instanceof BitmapDrawable) {
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
+        } else {
+            // Manejar otros tipos de drawables (como VectorDrawable o el icono por defecto)
+            int width = drawable.getIntrinsicWidth() > 0 ? drawable.getIntrinsicWidth() : 200;
+            int height = drawable.getIntrinsicHeight() > 0 ? drawable.getIntrinsicHeight() : 200;
+            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            android.graphics.Canvas canvas = new android.graphics.Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+        }
+
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();

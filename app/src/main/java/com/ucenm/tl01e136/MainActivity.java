@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,8 +55,12 @@ public class MainActivity extends AppCompatActivity {
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Bundle extras = result.getData().getExtras();
-                        Bitmap imageBitmap = (Bitmap) extras.get("data");
-                        imgContacto.setImageBitmap(imageBitmap);
+                        if (extras != null) {
+                            Bitmap imageBitmap = (Bitmap) extras.get("data");
+                            imgContacto.setImageBitmap(imageBitmap);
+                        } else {
+                            Toast.makeText(this, "No se pudo obtener la foto", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
@@ -121,8 +124,6 @@ public class MainActivity extends AppCompatActivity {
             valores.put(SQLiteConexion.telefono, telefono);
             valores.put(SQLiteConexion.nota, nota);
             valores.put(SQLiteConexion.imagen, imageViewToByte(imgContacto));
-
-            Long resultado = db.insert(SQLiteConexion.tablaContactos, SQLiteConexion.id, valores);
 
             Toast.makeText(this, "Contacto Guardado con exito", Toast.LENGTH_LONG).show();
             limpiarPantalla();

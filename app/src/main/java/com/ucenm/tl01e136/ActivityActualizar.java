@@ -41,13 +41,13 @@ public class ActivityActualizar extends AppCompatActivity {
         btnActualizar = findViewById(R.id.btnActualizarDatos);
         btnCancelar = findViewById(R.id.btnCancelarActualizar);
 
-        // Configurar Spinner
+        // configuracion de spinner
         String[] paises = {"Honduras (504)", "Costa Rica (506)", "Guatemala (502)", "El Salvador (503)"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, paises);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cmbPais.setAdapter(adapter);
 
-        // Cargar datos del Intent
+        // Cargar datos de intent
         txtId.setText(getIntent().getStringExtra("id"));
         txtNombre.setText(getIntent().getStringExtra("nombre"));
         txtTelefono.setText(getIntent().getStringExtra("telefono"));
@@ -59,7 +59,7 @@ public class ActivityActualizar extends AppCompatActivity {
             cmbPais.setSelection(position);
         }
         
-        // Cargar imagen si existe
+        // Cargar imagen
         byte[] imagenBytes = getIntent().getByteArrayExtra("imagen");
         if(imagenBytes != null){
             Bitmap bitmap = BitmapFactory.decodeByteArray(imagenBytes, 0, imagenBytes.length);

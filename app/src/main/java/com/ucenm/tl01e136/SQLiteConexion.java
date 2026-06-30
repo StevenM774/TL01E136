@@ -9,7 +9,7 @@ public class SQLiteConexion extends SQLiteOpenHelper {
     public static final String NameDatabase = "TL01E136";
     public static final String tablaContactos = "contactos";
     
-    // Campos
+    //Campos
     public static final String id = "id";
     public static final String pais = "pais";
     public static final String nombre = "nombre";

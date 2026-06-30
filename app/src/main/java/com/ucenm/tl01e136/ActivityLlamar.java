@@ -33,7 +33,7 @@ public class ActivityLlamar extends AppCompatActivity {
         btnAtrasLlamar = findViewById(R.id.btnAtrasLlamar);
         btnIconoLlamar = findViewById(R.id.btnIconoLlamar);
 
-        // Recibir el número y país desde el Intent
+        //Recibir numero y pais desde intent
         numero = getIntent().getStringExtra("telefono");
         pais = getIntent().getStringExtra("pais");
 
@@ -41,7 +41,7 @@ public class ActivityLlamar extends AppCompatActivity {
             String codigo = extraerCodigo(pais);
             String numeroCompleto = "+" + codigo + numero;
             txtNumeroLlamar.setText(numeroCompleto);
-            numero = numeroCompleto; // Actualizar el número con el código para la llamada
+            numero = numeroCompleto; // Actualizar numero con codigo de pais
         } else if (numero != null) {
             txtNumeroLlamar.setText(numero);
         }
@@ -72,7 +72,7 @@ public class ActivityLlamar extends AppCompatActivity {
     }
 
     private void realizarLlamada() {
-        // Verificar permiso
+        //Verificacion permiso
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, CALL_PERMISSION_REQUEST_CODE);
         } else {

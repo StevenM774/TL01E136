@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -15,11 +14,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.io.ByteArrayOutputStream;
 import java.util.regex.Pattern;
 
@@ -36,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Inicializar componentes
+
         txtNombre = findViewById(R.id.txtNombre);
         txtTelefono = findViewById(R.id.txtTelefono);
         txtNota = findViewById(R.id.txtNota);
@@ -52,17 +49,8 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cmbPais.setAdapter(adapter);
 
-        // Evento para seleccionar imagen de galeria
-        ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        Uri imageUri = result.getData().getData();
-                        imgContacto.setImageURI(imageUri);
-                    }
-                });
 
-        // Evento para tomar foto con camara
+        //Evento  tomar foto
         ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -73,20 +61,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        imgContacto.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            imagePickerLauncher.launch(intent);
-        });
 
         btnTomarFoto.setOnClickListener(v -> {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             cameraLauncher.launch(intent);
         });
 
-        // Evento Salvar
+        // Boton Salvar
         btnSalvar.setOnClickListener(v -> salvarContacto());
 
-        // Evento Lista
+        // Boton Lista
         btnLista.setOnClickListener(v -> {
             Intent intent = new Intent(this, ActivityListado.class);
             startActivity(intent);
@@ -99,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         String nota = txtNota.getText().toString().trim();
         String pais = cmbPais.getSelectedItem().toString();
 
-        // Validaciones con Alertas
+        // Validacion y alertas
         if (nombre.isEmpty()) {
             Toast.makeText(this, "Debe escribir un nombre", Toast.LENGTH_LONG).show();
             return;
@@ -126,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Proceso de Guardado
+        // Guardado
         try {
             conexion = new SQLiteConexion(this, SQLiteConexion.NameDatabase, null, 1);
             SQLiteDatabase db = conexion.getWritableDatabase();

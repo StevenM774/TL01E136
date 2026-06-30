@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Validaciones con Regex
+        // Validaciones
         if (!Pattern.matches("^[a-zA-Z\\s]+$", nombre)) {
             Toast.makeText(this, "El nombre solo debe contener letras", Toast.LENGTH_LONG).show();
             return;
@@ -141,22 +141,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private byte[] imageViewToByte(ImageView image) {
-        android.graphics.drawable.Drawable drawable = image.getDrawable();
-        if (drawable == null) return null;
-
-        Bitmap bitmap;
-        if (drawable instanceof BitmapDrawable) {
-            bitmap = ((BitmapDrawable) drawable).getBitmap();
-        } else {
-            // Manejar otros tipos de drawables (como VectorDrawable o el icono por defecto)
-            int width = drawable.getIntrinsicWidth() > 0 ? drawable.getIntrinsicWidth() : 200;
-            int height = drawable.getIntrinsicHeight() > 0 ? drawable.getIntrinsicHeight() : 200;
-            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            android.graphics.Canvas canvas = new android.graphics.Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawable.draw(canvas);
-        }
-
+        Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
